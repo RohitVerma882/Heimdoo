@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name" translatable="false">Heimdoo</string>
+
+    <string name="action_about">About</string>
+    <string name="action_attach_file">Attach File</string>
+    <string name="action_clear">Clear screen</string>
+    <string name="action_share">Share</string>
+
+    <string name="type_command_here">Type command here</string>
+    <string name="about_view_source_code"><![CDATA[Made with &#9829 in India by %s]]></string>
+    <string name="title_share_transcript_with">Share command result</string>
+    <string name="performing_command">Performing command…</string>
+    <string name="preparing_file">Preparing file…</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="permission_rationale_title">Why additional permissions?</string>
+    <string name="permission_rationale_msg">The app will need storage permission to access your files.</string>
+    <string name="feiled_to_access_files">Heimdoo has issues to access files on your Android system. You might need to remove custom OS hacks that prohibit standard way of accessing files</string>
+    <string name="feiled_to_get_file_path">Could not retrieve file path! Check if app has storage permission and if file is not corrupted</string>
+</resources>

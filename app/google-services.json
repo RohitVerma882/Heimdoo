@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "35822097218",
+    "project_id": "heimdoo",
+    "storage_bucket": "heimdoo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35822097218:android:b0ee3f951cea2b2394aedb",
+        "android_client_info": {
+          "package_name": "dev.rohitverma882.heimdoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "35822097218-4o9v0dl3itbqopj727vo6ghtjf8tuqdg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDpqW1PUiqZVNX86T6yIb9_HAWpYqn-C8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "35822097218-4o9v0dl3itbqopj727vo6ghtjf8tuqdg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
