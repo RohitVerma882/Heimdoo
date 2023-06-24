@@ -4,25 +4,18 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.hardware.usb.UsbDevice
-import android.hardware.usb.UsbDeviceConnection
 import android.hardware.usb.UsbManager
 import android.os.IBinder
 import android.util.Log
-
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-
-import java.io.File
-
 import kotlin.system.exitProcess
 
 class HeimdooService : Service() {
-    private external fun init()
-
     private val nativeInitialized by lazy {
         try {
-            init()
+            Heimdoo.init()
             true
         } catch (e: Exception) {
             Utilities.logException(e)
@@ -30,6 +23,7 @@ class HeimdooService : Service() {
             false
         }
     }
+
     private val scope = MainScope()
 
     private val heimdooListener = object : HeimdooResultListener {
@@ -82,7 +76,7 @@ class HeimdooService : Service() {
         if (deviceList.size == 1) {
             val usbDevice = deviceList.first()
             Log.d(TAG, "processing heimdall only one device: ${usbDevice.deviceName}")
-            if (isHeimdallDevice(usbManager, usbDevice)) {
+            if (Heimdoo.isHeimdallDevice(usbManager, usbDevice)) {
                 processCommand(usbDevice, cmdArray.copyOf())
             } else {
                 processCommand(null, cmdArray.copyOf())
@@ -90,7 +84,7 @@ class HeimdooService : Service() {
         } else if (deviceList.size > 1) {
             Log.d(TAG, "processing heimdall more devices: ${deviceList.size}")
             deviceList.forEach { usbDevice ->
-                if (isHeimdallDevice(usbManager, usbDevice)) {
+                if (Heimdoo.isHeimdallDevice(usbManager, usbDevice)) {
                     processCommand(usbDevice, cmdArray.copyOf())
                     return
                 }
@@ -105,14 +99,14 @@ class HeimdooService : Service() {
         scope.launch(Dispatchers.IO) {
             if (usbDevice != null) {
                 getSystemService(Context.USB_SERVICE).also { any ->
-                    execHeimdall(
+                    Heimdoo.execHeimdall(
                         this@HeimdooService, (any as UsbManager), usbDevice, args.copyOf()
                     ).also {
                         heimdooListener.onHeimdooResult(it)
                     }
                 }
             } else {
-                execHeimdall(this@HeimdooService, args.copyOf()).also {
+                Heimdoo.execHeimdall(this@HeimdooService, args.copyOf()).also {
                     heimdooListener.onHeimdooResult(it)
                 }
             }
@@ -120,98 +114,7 @@ class HeimdooService : Service() {
     }
 
     companion object {
-        init {
-            System.loadLibrary("heimdoo")
-        }
-
-        @JvmStatic
-        private external fun isHeimdallDevice(fd: Int): Boolean
-
-        @JvmStatic
-        private external fun execHeimdall(
-            stdout: String,
-            stderr: String,
-            fd: Int,
-            args: Array<String>,
-        )
-
-        fun isHeimdallDevice(
-            usbDeviceConnection: UsbDeviceConnection,
-            usbDevice: UsbDevice?,
-        ): Boolean {
-            return isHeimdallDevice(
-                usbDeviceConnection.fileDescriptor
-            )
-        }
-
-        fun isHeimdallDevice(usbManager: UsbManager, usbDevice: UsbDevice?): Boolean {
-            val usbDeviceConnection = usbManager.openDevice(usbDevice)
-            val result = isHeimdallDevice(
-                usbDeviceConnection.fileDescriptor
-            )
-            usbDeviceConnection.close()
-            return result
-        }
-
-        fun execHeimdall(
-            context: Context,
-            usbDeviceConnection: UsbDeviceConnection,
-            usbDevice: UsbDevice,
-            args: Array<String>,
-        ): String {
-            val outFile = File(context.cacheDir, HEIMDALL_OUT_FILE)
-            outFile.delete()
-            outFile.parentFile!!.mkdirs()
-            outFile.createNewFile()
-            val errFile = File(context.cacheDir, HEIMDALL_ERR_FILE)
-            errFile.delete()
-            errFile.parentFile!!.mkdirs()
-            errFile.createNewFile()
-            execHeimdall(
-                outFile.absolutePath,
-                errFile.absolutePath,
-                usbDeviceConnection.fileDescriptor,
-                args.copyOf()
-            )
-            return outFile.readText().plus('\n').plus(errFile.readText()).trim()
-        }
-
-        fun execHeimdall(
-            context: Context,
-            usbManager: UsbManager,
-            usbDevice: UsbDevice,
-            args: Array<String>,
-        ): String {
-            Log.d(TAG, "execHeimdall() ${args.joinToString(" ")}")
-            val usbDeviceConnection = usbManager.openDevice(usbDevice)
-            val result = execHeimdall(
-                context, usbDeviceConnection, usbDevice, args.copyOf()
-            )
-            usbDeviceConnection.close()
-            return result
-        }
-
-        fun execHeimdall(
-            context: Context,
-            args: Array<String>,
-        ): String {
-            val outFile = File(context.cacheDir, HEIMDALL_OUT_FILE)
-            outFile.delete()
-            outFile.parentFile!!.mkdirs()
-            outFile.createNewFile()
-            val errFile = File(context.cacheDir, HEIMDALL_ERR_FILE)
-            errFile.delete()
-            errFile.parentFile!!.mkdirs()
-            errFile.createNewFile()
-            execHeimdall(
-                outFile.absolutePath, errFile.absolutePath, -1, args.copyOf()
-            )
-            return outFile.readText().plus('\n').plus(errFile.readText()).trim()
-        }
-
         private const val TAG = "HeimdooService"
-        private const val HEIMDALL_OUT_FILE = "heimdall.out"
-        private const val HEIMDALL_ERR_FILE = "heimdall.err"
         const val ACTION_PROCESS_COMMAND = "dev.rohitverma882.heimdoo.action.PROCESS_COMMAND"
         const val ACTION_COMMAND_RESULT = "dev.rohitverma882.heimdoo.action.COMMAND_RESULT"
         const val KEY_COMMAND = "key.command"

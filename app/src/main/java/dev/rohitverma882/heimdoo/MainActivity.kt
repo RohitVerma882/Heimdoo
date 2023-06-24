@@ -377,7 +377,7 @@ class MainActivity : AppCompatActivity() {
                             val usbDeviceConnection = usbManager.openDevice(it)
                             if (usbDeviceConnection == null) {
                                 Log.d(TAG, "Device opened returned null connection!")
-                            } else if (HeimdooService.isHeimdallDevice(
+                            } else if (Heimdoo.isHeimdallDevice(
                                     usbDeviceConnection, it
                                 )
                             ) {
@@ -434,10 +434,10 @@ class MainActivity : AppCompatActivity() {
                     if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
                         Log.d(TAG, "Usb permission granted")
                         usbDevice?.let {
-                            if (HeimdooService.isHeimdallDevice(usbManager, it)) {
+                            if (Heimdoo.isHeimdallDevice(usbManager, it)) {
                                 Log.d(TAG, "devname=" + it.deviceName)
                                 try {
-                                    val result = HeimdooService.execHeimdall(
+                                    val result = Heimdoo.execHeimdall(
                                         this@MainActivity,
                                         usbManager,
                                         it,
