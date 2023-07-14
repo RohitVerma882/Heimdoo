@@ -15,9 +15,8 @@ android {
         applicationId "dev.rohitverma882.heimdoo"
         minSdk 24
         targetSdk 34
-        versionCode 11
-        versionName "1.6"
-
+        versionCode 12
+        versionName "1.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resValue 'string', 'app_version', versionName + ' (' + versionCode + ')'
 
@@ -67,8 +66,8 @@ dependencies {
     implementation 'dev.rikka.rikkax.html:html-ktx:1.1.2'
     implementation 'dev.rikka.ndk.thirdparty:cxx:1.2.0'
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2'
 
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'

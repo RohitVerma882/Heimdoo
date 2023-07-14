@@ -43,12 +43,14 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+    private val openDevices: MutableMap<String, UsbDeviceConnection> = HashMap()
+    private var cleanCachedImgs: Boolean = true;
+
     private val usbManager: UsbManager by lazy {
         (getSystemService(
             Context.USB_SERVICE
         ) as UsbManager)
     }
-    private val openDevices: MutableMap<String, UsbDeviceConnection> = HashMap()
 
     private val resultReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
@@ -101,10 +103,12 @@ class MainActivity : AppCompatActivity() {
 
     private val openDocumentLauncher = registerOpenDocumentLauncher("*/*") { uri: Uri? ->
         processFileSelected(uri)
+        cleanCachedImgs = false
     }
 
     private val getContentLauncher = registerGetContentLauncher("*/*") { uri: Uri? ->
         processFileSelected(uri)
+        cleanCachedImgs = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -275,7 +279,7 @@ class MainActivity : AppCompatActivity() {
                 Intent(this, FileCacheService::class.java).apply {
                     action = FileCacheService.ACTION_COPY_TO_CACHE
                     putExtra(FileCacheService.KEY_DEST_DIR, imgCacheDir)
-                    putExtra(FileCacheService.KEY_DELETE_DEST_DIR_CONTENT, true)
+                    putExtra(FileCacheService.KEY_DELETE_DEST_DIR_CONTENT, cleanCachedImgs)
                     putExtra(FileCacheService.KEY_SRC_FILE_URI, any)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                         setPackage(packageName)
