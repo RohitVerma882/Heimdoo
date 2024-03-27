@@ -20,7 +20,6 @@ import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
 
 object AppIconCache : CoroutineScope {
-
     private class AppIconLruCache constructor(maxSize: Int) :
         LruCache<Triple<String, Int, Int>, Bitmap>(maxSize) {
 

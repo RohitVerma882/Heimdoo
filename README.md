@@ -1,2 +1,2 @@
 # Heimdoo
-Samsung odin3 (protocol) alternative Heimdall ported for Android.
+Samsung odin3 alternative Heimdall ported for Android.

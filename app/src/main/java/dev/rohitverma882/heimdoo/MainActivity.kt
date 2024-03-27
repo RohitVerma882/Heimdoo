@@ -26,11 +26,18 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 
 import dev.rohitverma882.heimdoo.Constants.ACTION_USB_DEVICE_CONNECTED
 import dev.rohitverma882.heimdoo.databinding.ActivityMainBinding
@@ -51,6 +58,7 @@ class MainActivity : AppCompatActivity() {
             Context.USB_SERVICE
         ) as UsbManager)
     }
+    private lateinit var appUpdateManager: AppUpdateManager
 
     private val resultReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
@@ -111,6 +119,13 @@ class MainActivity : AppCompatActivity() {
         cleanCachedImgs = false
     }
 
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode != RESULT_OK) {
+                Log.e(TAG, "Update flow failed! Result code: " + result.resultCode)
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -133,6 +148,20 @@ class MainActivity : AppCompatActivity() {
             ContextCompat.RECEIVER_NOT_EXPORTED
         )
         tryStartHeimdooService()
+
+        // check app update
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    activityResultLauncher,
+                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
+                )
+            }
+        }
     }
 
     private fun initViews() {
@@ -345,6 +374,20 @@ class MainActivity : AppCompatActivity() {
         if (allServiceFinished) {
             hideLoading()
         }
+
+        appUpdateManager
+            .appUpdateInfo
+            .addOnSuccessListener { appUpdateInfo ->
+                if (appUpdateInfo.updateAvailability()
+                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
+                ) {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        activityResultLauncher,
+                        AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
+                    )
+                }
+            }
     }
 
     private fun initUsbReceiver() {

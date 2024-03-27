@@ -12,14 +12,12 @@ import android.provider.MediaStore;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
 import java.io.File;
 
 public class Utilities {
     public static void logException(@NonNull Throwable e) {
         e.printStackTrace();
-        FirebaseCrashlytics.getInstance().recordException(e);
+//        FirebaseCrashlytics.getInstance().recordException(e);
     }
 
     public static String getFileExtension(final String filename) {

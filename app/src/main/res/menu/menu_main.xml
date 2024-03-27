@@ -10,19 +10,19 @@
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_share"
-        android:orderInCategory="200"
+        android:orderInCategory="100"
         android:title="@string/action_share"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_clear"
-        android:orderInCategory="300"
+        android:orderInCategory="100"
         android:title="@string/action_clear"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_about"
-        android:orderInCategory="400"
+        android:orderInCategory="100"
         android:title="@string/action_about"
         app:showAsAction="never" />
 </menu>

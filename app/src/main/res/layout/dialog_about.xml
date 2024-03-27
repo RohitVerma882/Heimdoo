@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="?android:dialogPreferredPadding">
+    android:padding="24dp">
 
     <ImageView
         android:id="@android:id/icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/default_app_icon_size"
+        android:layout_height="@dimen/default_app_icon_size"
         android:importantForAccessibility="no"
         tools:src="@mipmap/ic_launcher" />
 
@@ -30,6 +30,7 @@
             android:id="@+id/version_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:textSize="14sp" />
 
         <TextView
@@ -40,7 +41,6 @@
             android:textColor="?android:textColorSecondary"
             android:textSize="14sp"
             tools:text="@string/about_view_source_code" />
-
     </LinearLayout>
 
 </LinearLayout>

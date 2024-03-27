@@ -1,17 +1,20 @@
 <resources>
     <string name="app_name" translatable="false">Heimdoo</string>
 
+    <!--    Action menu-->
     <string name="action_about">About</string>
     <string name="action_attach_file">Attach File</string>
     <string name="action_clear">Clear screen</string>
     <string name="action_share">Share</string>
 
-    <string name="type_command_here">Type command here</string>
+    <!--    About dialog-->
     <string name="about_view_source_code"><![CDATA[Made with &#9829 in India by %s]]></string>
+
+    <!--    Misc-->
+    <string name="type_command_here">Type command here</string>
     <string name="title_share_transcript_with">Share command result</string>
     <string name="performing_command">Performing command…</string>
     <string name="preparing_file">Preparing file…</string>
-
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="permission_rationale_title">Why additional permissions?</string>
