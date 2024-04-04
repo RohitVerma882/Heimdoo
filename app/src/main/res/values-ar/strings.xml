@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name" translatable="false">Heimdoo</string>
+
+    <string name="action_about">حول</string>
+    <string name="action_attach_file">إرفاق ملف</string>
+    <string name="action_clear">مسح الشاشة</string>
+    <string name="action_share">مشاركة</string>
+
+    <string name="type_command_here">اكتب الأمر هنا</string>
+    <string name="about_view_source_code"><![CDATA[صنع بـ &#9829 في الهند بواسطة %s]]></string>
+    <string name="title_share_transcript_with">مشاركة نتيجة الأمر</string>
+    <string name="performing_command">تنفيذ الأمر…</string>
+    <string name="preparing_file">جارٍ تحضير الملف…</string>
+
+    <string name="cancel">إلغاء</string>
+    <string name="ok">حسناً</string>
+    <string name="permission_rationale_title">لما الصلاحيات الإضافية؟</string>
+    <string name="permission_rationale_msg">سيحتاج التطبيق إلى صلاحيات التخزين للوصول إلى ملفاتك.</string>
+    <string name="feiled_to_access_files">يواجه Heimdoo مشكلات في الوصول إلى الملفات الموجودة على نظام Android الخاص بك. قد تحتاج إلى إزالة تعديلات/حيل الرومات المخصصة لنظام التشغيل والتي تحظر الطريقة القياسية للوصول إلى الملفات</string>
+    <string name="feiled_to_get_file_path">لا يمكن استرداد مسار الملف! تحقق مما إذا كان التطبيق لديه صلاحيات التخزين وما إذا كان الملف غير تالف</string>
+</resources>
